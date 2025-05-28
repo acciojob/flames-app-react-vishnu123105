@@ -1,64 +1,77 @@
 import React, { useState } from "react";
 
-
-const resulte = {
-  1 :"Friends",
-  2 : "Love",
-  3 : "Affection",
-  4 : "Marriage",
-  5 : "Enemy",
-  0 : "Siblings",
-}
+const resultMap = {
+  1: "Friends",
+  2: "Love",
+  3: "Affection",
+  4: "Marriage",
+  5: "Enemy",
+  0: "Siblings",
+};
 
 const App = () => {
-const [boy,setBoy] = useState('')
-const[girl,setgirl]= useState('')
-const [anser,setAnser]= useState('')
-function fua(){
-  let b = boy;
-  let g = girl;
-  let c ='';
-  for(let i of b){
-    if(!girl.includes(i)){
-    c+=i;
+  const [boy, setBoy] = useState("");
+  const [girl, setGirl] = useState("");
+  const [answer, setAnswer] = useState("");
+
+  function calculateRelationship() {
+    let b = boy.toLowerCase();
+    let g = girl.toLowerCase();
+    let unique = "";
+
+    for (let i of b) {
+      if (!g.includes(i)) unique += i;
     }
-  } 
-  for(let i of g){
-    if(!boy.includes(i))
-      c+=i;
+
+    for (let i of g) {
+      if (!b.includes(i)) unique += i;
+    }
+
+    let resultIndex = unique.length % 6;
+    setAnswer(resultMap[resultIndex]);
   }
-  let z = c.length%6;
-setAnser(resulte[z])
-}
+
   return (
     <div>
-      <h1>FLAMES  APP...</h1>
-      <input data-testid="input1" name="name1" placeholder="Enter first name" value={boy}
-      onChange={(e)=>setBoy(e.target.value)}
+      <h1>FLAMES APP...</h1>
+
+      <input
+        data-testid="input1"
+        name="name1"
+        placeholder="Enter first name"
+        value={boy}
+        onChange={(e) => setBoy(e.target.value)}
       />
+
       <input
         data-testid="input2"
         name="name2"
         placeholder="Enter second name"
         value={girl}
-      onChange={(e)=>setgirl(e.target.value)}
+        onChange={(e) => setGirl(e.target.value)}
       />
+
       <button
-        data-testid="Calculate_relationship"
-        name="calculate_relationship" onClick={()=>{
-        fua()
+        data-testid="calculate_relationship"
+        name="calculate_relationship"
+        onClick={calculateRelationship}
+      >
+        Calculate_relationship
+      </button>
+
+      <button
+        data-testid="clear"
+        name="clear"
+        onClick={() => {
+          setBoy("");
+          setGirl("");
+          setAnswer("");
         }}
       >
-        calculater relation futer
+        Clear
       </button>
-      <button data-testid="clear" name="clear" onClick={()=>{
-        setBoy('');
-        setgirl('');
-        setAnser('');
-      }}>
-        clear
-      </button>
-      <h3>{anser}</h3>
+
+      <h3 data-testid="answer">{answer}</h3>
     </div>
   );
 };
